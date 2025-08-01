@@ -1,22 +1,21 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: nginx
+  name: monitoring
   namespace: argocd
 spec:
   project: default
-
   source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: nginx
-    targetRevision: 15.2.0
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 58.2.1
     helm:
       valueFiles:
-        - https://raw.githubusercontent.com/mpham-tomtom/argocd-sandbox/main/nginx/values.yaml
+        - https://raw.githubusercontent.com/mpham-tomtom/argocd-sandbox/main/monitoring/values.yaml
 
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: monitoring
 
   syncPolicy:
     automated:
