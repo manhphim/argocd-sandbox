@@ -58,7 +58,11 @@
 				<version>3.4.6</version>
 				<configuration>
 					<to>
-						<image>docker.io/manhphim1205/demo-java-maven</image>
+						<image>docker.io/manhphim1205/demo-java-maven:${project.version}</image>
+						<tags>
+							<tag>latest</tag>
+							<tag>${project.version}</tag>
+						</tags>
 					</to>
 					<from>
 						<image>eclipse-temurin:17-jre</image>
