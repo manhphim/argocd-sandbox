@@ -11,7 +11,7 @@ spec:
     targetRevision: 58.2.1
     helm:
       valueFiles:
-        - https://raw.githubusercontent.com/mpham-tomtom/argocd-sandbox/main/monitoring/values.yaml
+        - https://raw.githubusercontent.com/manhphim/argocd-sandbox/main/monitoring/values.yaml
 
   destination:
     server: https://kubernetes.default.svc
