@@ -61,3 +61,12 @@ additionalPrometheusRulesMap:
             annotations:
               summary: "Container not ready"
               description: "Container '{{ $labels.container }}' in pod '{{ $labels.pod }}' (ns: '{{ $labels.namespace }}') has failed readiness probe for more than 5 minutes."
+
+          - alert: TestAlert
+            expr: vector(1)
+            for: 30s
+            labels:
+              severity: warning
+            annotations:
+              summary: "Test Alert"
+              description: "Test Alert to verify Slack integration"
