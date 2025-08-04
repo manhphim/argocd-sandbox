@@ -1,0 +1,30 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: spring-app-probe-alerts
+  namespace: monitoring
+  labels:
+    release: monitoring
+spec:
+  groups:
+    - name: spring-boot-health.rules
+      rules:
+        - alert: ContainerRestartSpike
+          expr: |
+            increase(kube_pod_container_status_restarts_total{namespace=~"fdp-.*|mod-.*|inc-.*|bulk-.*"}[10m]) > 3
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Container is restarting frequently"
+            description: "Container '{{ $labels.container }}' in pod '{{ $labels.pod }}' (namespace '{{ $labels.namespace }}') restarted more than 3 times in 10 minutes."
+
+        - alert: ContainerNotReady
+          expr: |
+            kube_pod_container_status_ready{namespace=~"fdp-.*|mod-.*|inc-.*|bulk-.*"} == 0
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Container not ready"
+            description: "Container '{{ $labels.container }}' in pod '{{ $labels.pod }}' has failed readiness checks for more than 5 minutes."
