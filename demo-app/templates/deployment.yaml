@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "deploy-service.deployname" . }}
+  labels:
+    {{- include "deploy-service.labels" . | nindent 4 }}
+  annotations:
+    {{- include "deploy-service.annotations" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "deploy-service.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        azure.workload.identity/use: "true"
+        {{- include "deploy-service.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ tpl (toYaml .Values.configMapProperties) . | sha256sum }}
+    spec:
+      serviceAccountName: {{ .Values.service_account_name }}
+      restartPolicy: Always
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
