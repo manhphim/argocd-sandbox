@@ -2,5 +2,5 @@ replicaCount: 1
 
 image:
   repository: docker.io/manhphim1205/demo-java-maven
-#  tag: "1.0.312"
+  tag: "0.0.1-SNAPSHOT"
   pullPolicy: IfNotPresent

@@ -22,7 +22,7 @@ spec:
       restartPolicy: Always
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.repository }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
