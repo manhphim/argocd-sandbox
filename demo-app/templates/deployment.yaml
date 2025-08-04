@@ -19,11 +19,10 @@ spec:
       annotations:
         checksum/config: {{ tpl (toYaml .Values.configMapProperties) . | sha256sum }}
     spec:
-      serviceAccountName: {{ .Values.service_account_name }}
       restartPolicy: Always
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
